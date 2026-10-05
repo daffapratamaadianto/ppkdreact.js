@@ -21,6 +21,7 @@ const FormPeserta = ({ onSimpan, onCancel, pesertaEdit }) => {
     const handleSimpan = (e) => {
         e.preventDefault();
         // jika dia edit
+        
         if (pesertaEdit) {
 
         }
@@ -63,7 +64,7 @@ const FormPeserta = ({ onSimpan, onCancel, pesertaEdit }) => {
                     style={{
                         padding: "8px"
                     }} />
-                <button type="sumbit" style={{
+                <button type="submit" style={{
                     background: "#2817c5",
                     color: "white",
                     border: "none",

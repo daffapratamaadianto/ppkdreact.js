@@ -1,9 +1,14 @@
 import { useState } from "react";
-import { Form, Button, Container, Card } from "react-bootstrap";
+// import { Form, Button, Container, Card } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "../components/ui/card";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Button } from "../components/ui/button";
+
 
 export default function Login() {
-    const Navigate = useNavigate();
+    const navigate = useNavigate();
     const _initialForm = {
         email: "",
         password: "",
@@ -25,60 +30,141 @@ export default function Login() {
     }
 
     const handleLogin = (e) => {
-        e.preventDeafult();
+        e.preventDefault();
         setIsLoading(true);
-        setTimeOut (() => {
+        setTimeout(() => {
             setIsLoading(false)
-            Navigate("/dashboard")
-            
+            navigate("/dashboard")
+
         }, 1000)
     }
 
+    // return (
+
+    //     <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4">
+    //         <div className="w-full max-w-md">
+    //             <div className="mb-6 flex flex-col items-center " >
+    //                 <div className="mb-2 flex h-12 w-12 items-start justify-center rounded-sm shadow"></div>
+    //                 <h1 className="text-2xl font-bold tracking-light"> point off sales|ppkd jakpus</h1>
+    //                 <p className="text-sm text-muted">point of sales</p>
+
+    //             </div>
+    //             <Card className="shadow-lg border-border">
+    //                 < CardHeader className="space-y-1 pb-4">
+    //                     <CardTitle className="text-lg font-semibold">sign your account</CardTitle>
+    //                     <CardDescription>enter your crediential</CardDescription>
+    //                 </CardHeader>
+
+    //                 <form onSubmit={handleLogin}>
+    //                     <CardContent className="space-y-4">
+    //                         <div className="space-y-2">
+    //                             <Label>email</Label>
+    //                             <input id="email" name="email" type="email"
+    //                                 value={formData.email} onChange={handleChange} placeholder="enter your email" required />
+    //                         </div>
+    //                         <div className="space-y-2">
+    //                             <label>password</label>
+    //                             <input id="password" name="password" type="password"
+    //                                 value={formData.password} onChange={handleChange} placeholder="enter your password" required />
+    //                         </div>
+    //                     </CardContent>
+
+    //                     <CardFooter className="flex flex-col gap-3 p-3">
+    //                         <Button type="submit" className="w-full"> sign in</Button>
+
+    //                     </CardFooter>
+    //                 </form>
+    //             </Card>
+
+    //         </div>
+    //     </div>
+
+    //     // <Container
+    //     //     className="d-flex alignotems-center justify-content-center min-vh-100">
+
+    //     //     <div className="w-100 d-flex align-items-center justify-content-center">
+
+    //     //         <Card className="shadow" style={{ width: "400px" }}>
+    //     //             <Card.Body className="p-4">
+    //     //                 <h2 className="font-weight-bold text-center mb-4">
+    //     //                     login form
+    //     //                 </h2>
+    //     //                 <Form >
+    //     //                     <Form.Group className="mb-3">
+    //     //                         <Form.Label>Email</Form.Label>
+    //     //                         <Form.Control name="email"
+    //     //                             value={formData.email}
+    //     //                             onChange={handleChange}
+    //     //                             type="email"
+    //     //                             required></Form.Control>
+    //     //                     </Form.Group>
+
+    //     //                     <Form.Group className="mb-3">
+    //     //                         <Form.Label>Password</Form.Label>
+    //     //                         <Form.Control
+    //     //                             name="password"
+    //     //                             onChange={handleChange}
+    //     //                             type="password" value={formData.password}
+    //     //                             required></Form.Control>
+    //     //                     </Form.Group>
+    //     //                     <Form.Group>
+    //     //                         <Button variant="primary" type="submit" 
+    //     //                         className="w-100" onClick={handleLogin}>
+    //     //                             {isLoading ? "Loading..." : "Sign In"}
+    //     //                         </Button>
+    //     //                     </Form.Group>
+    //     //                 </Form>
+
+    //     //             </Card.Body>
+    //     //         </Card>
+
+    //     //     </div>
+    //     // </Container>
+    // )
+
+
+
+
+
+
     return (
-
-
-        <Container
-            className="d-flex alignotems-center justify-content-center min-vh-100">
-
-            <div className="w-100 d-flex align-items-center justify-content-center">
-
-                <Card className="shadow" style={{ width: "400px" }}>
-                    <Card.Body className="p-4">
-                        <h2 className="font-weight-bold text-center mb-4">
-                            login form
-                        </h2>
-                        <Form >
-                            <Form.Group className="mb-3">
-                                <Form.Label>Email</Form.Label>
-                                <Form.Control name="email"
-                                    value={formData.email}
-                                    onChange={handleChange}
-                                    type="email"
-                                    required></Form.Control>
-                            </Form.Group>
-
-                            <Form.Group className="mb-3">
-                                <Form.Label>Password</Form.Label>
-                                <Form.Control
-                                    name="password"
-                                    onChange={handleChange}
-                                    type="password" value={formData.password}
-                                    required></Form.Control>
-                            </Form.Group>
-                            <Form.Group>
-                                <Button variant="primary" type="submit" 
-                                className="w-100" onClick={handleLogin}>
-                                    {isLoading ? "Loading..." : "Sign In"}
-                                </Button>
-                            </Form.Group>
-                        </Form>
-
-                    </Card.Body>
+        <div className="flex min-h-screen items-center justify-center bg-muted/40 p-4 ">
+            <div className="w-full max-w-md">
+                <div className="mb-6 flex flex-col items-center">
+                    {/* <div className="mb-2 flex h-12 w-12 items-start justify-center rounded-lg shadow">
+                    </div> */}
+                    <h1 className="text-2xl font-bold tracking-tight"> Point Of Sales | Warung Sokin</h1>
+                    <p className="text-sm text-muted">Point Of Sales</p>
+                </div>
+                <Card className="rounded-lg shadow-lg border-border">
+                    <CardHeader className="mx-auto p-4 space-y-1 w-full">
+                        <CardTitle className="text-lg font-semibold"> Sign In Your Account</CardTitle>
+                        <CardDescription>Enter your credential</CardDescription>
+                    </CardHeader>
+                    <form onSubmit={handleLogin}>
+                        <CardContent className="p-4 space-y-4">
+                            <div className="space-y-2">
+                                <Label>Email</Label>
+                                <Input id="email" name="email" type="text" value={formData.email} onChange={handleChange} placeholder="Enter your email" required autoFocus></Input>
+                            </div>
+                            <div className="space-y-2">
+                                <Label>Password</Label>
+                                <Input id="password" name="password" type="password" value={formData.password} onChange={handleChange} placeholder="Enter your password" required></Input>
+                            </div>
+                        </CardContent>
+                        <CardFooter className="flex flex-col gap-3 p-3">
+                            <Button type="submit" className="w-full ">
+                                Sign In
+                            </Button>
+                        </CardFooter>
+                    </form>
                 </Card>
-
             </div>
-        </Container>
+        </div>
+       
     )
+
+
 
 }
 

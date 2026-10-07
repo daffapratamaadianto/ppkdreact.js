@@ -12,6 +12,8 @@ import Login from "./pages/Login";
 import Dashboard from './pages/Dashboard'
 import MainLayout from './pages/MainLayout'
 import ListUser from './pages/user/ListUser'
+import CategoryPage from './pages/Category/CategoryPage'
+import ProductPage from './pages/Product/ProductPage'
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route element={<MainLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/user" element={<ListUser />} />
+          <Route path="/Category" element={<CategoryPage />} />
+          <Route path="/product" element={<ProductPage />} />
         </Route>
 
       </Routes>

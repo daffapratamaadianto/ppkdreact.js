@@ -28,6 +28,7 @@ const AppModal = (
 
                 <form onSubmit={onSubmit}>
                     <div className="py-2">{children}</div>
+                    
                     <DialogFooter>
                         <Button type="submit" disabled={isLoading}>
                             {isLoading ? 'Loading...' : submitLabel}

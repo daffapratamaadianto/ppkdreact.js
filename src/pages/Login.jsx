@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Button } from "../components/ui/button";
+// import { p } from "node_modules/cn/dist/compiler2";
 
 
 export default function Login() {
@@ -14,8 +15,10 @@ export default function Login() {
         password: "",
     }
 
-    const [formData, setFormData] = useState(_initialForm)
-    const [isLoading, setIsLoading] = useState(false)
+    const [formData, setFormData] = useState(_initialForm);
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("");
+
 
     const handleChange = (e) => {
 
@@ -29,14 +32,37 @@ export default function Login() {
 
     }
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         setIsLoading(true);
-        setTimeout(() => {
-            setIsLoading(false)
-            navigate("/dashboard")
 
-        }, 1000)
+        try {
+            const res = await fetch('http://localhost:3000/api/auth/login', {
+                method: "POST",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData)
+            });
+            const result = await res.json();
+            if (!res.ok) {
+                throw new Error(result.message || "pelase, check your email and password")
+            }
+            localStorage.setItem("", result.data.token)
+            setTimeout(() => {
+                setIsLoading(false)
+                navigate("/dashboard")
+
+            }, 1000)
+        } catch (eror) {
+            console.log(eror.message)
+            setErrorMsg(eror.message)
+        } finally {
+            setIsLoading(false);
+        }
+
+
     }
 
     // return (
@@ -140,6 +166,7 @@ export default function Login() {
                     <CardHeader className="mx-auto p-4 space-y-1 w-full">
                         <CardTitle className="text-lg font-semibold"> Sign In Your Account</CardTitle>
                         <CardDescription>Enter your credential</CardDescription>
+                        {errorMsg && <p className="text-red-900">{errorMsg}</p>}
                     </CardHeader>
                     <form onSubmit={handleLogin}>
                         <CardContent className="p-4 space-y-4">
@@ -161,7 +188,7 @@ export default function Login() {
                 </Card>
             </div>
         </div>
-       
+
     )
 
 

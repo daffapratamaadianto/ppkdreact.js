@@ -4,7 +4,7 @@
 
 // import { Button } from "/././components/ui/button";
 // // import AppModal from "../../components/AppModal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import {
     Card,
@@ -21,50 +21,67 @@ import { Button } from "../../components/ui/button";
 import AppModal from "../../components/AppModal";
 import { Label } from "../../components/ui/label";
 import { Input } from "../../components/ui/input";
+import api from "@/services/api.js"
 
 // import { title } from "node:process";
 
-const dataUser = [
-    {
-        id: 1,
-        name: "Daffa",
-        email: "daffa@gmail.com",
-        password: "1234"
-    },
-    {
-        id: 2,
-        name: "wowo",
-        email: "wowo@gmail.com",
-        password: "1234"
-    },
-    {
-        id: 2,
-        name: "wiwi",
-        email: "wiwi@gmail.com",
-        password: "1234"
-    },
-    {
-        id: 3,
-        name: "wuwu",
-        email: "wuwu@gmail.com",
-        password: "1234"
-    },
-]
+// const dataUser = [
+//     {
+//         id: 1,
+//         name: "Daffa",
+//         email: "daffa@gmail.com",
+//         password: "1234"
+//     },
+//     {
+//         id: 2,
+//         name: "wowo",
+//         email: "wowo@gmail.com",
+//         password: "1234"
+//     },
+//     {
+//         id: 2,
+//         name: "wiwi",
+//         email: "wiwi@gmail.com",
+//         password: "1234"
+//     },
+//     {
+//         id: 3,
+//         name: "wuwu",
+//         email: "wuwu@gmail.com",
+//         password: "1234"
+//     },
+// ]
 const ListUser = () => {
     const _initForm = {
 
         name: "",
         email: "",
         password: "",
-        status: "Active",
+        is_active: "1",
 
     }
 
 
     const [showModal, setShowModal] = useState(false)
-    const [users, setUsers] = useState(dataUser)
+    const [users, setUsers] = useState([])
     const [formData, setFormData] = useState(_initForm)
     const [isEdit, setEdit] = useState(false)
+    const fetchUser = async () => {
+        try {
+            const response = await api.get("/user")
+
+            setUsers(response.data.data)
+        } catch (error) {
+            console.log(error.message)
+        }
+
+    }
+
+    useEffect(() => {
+        fetchUser();
+    }, [])
+
+
     // const [isDelete, setDelete] = useState(false)
 
     const handleOpenModal = () => {
@@ -92,20 +109,38 @@ const ListUser = () => {
 
 
     }
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
-        //jika edit data
-        if (isEdit) {
-            setUsers(users.map((user) => (user.id === formData.id ? formData : user)))
-        } else {
-            const newUser = {
-                ...formData,
-                id: Date.now(),
+        try {
+            const payload = {
+                name: formData.name,
+                email: formData.email,
+                password: formData.password,
+                is_active: parseInt(formData.is_active)
             }
-            setUsers([...users, newUser])
+            if (isEdit) {
+                await api.put(`/user/${formData.id}`, payload)
+
+                // setUsers(users.map((user) => (user.id === formData.id ? formData : user)))
+            } else {
+                await api.post("/user", payload)
+                // const newUser = {
+                //     ...formData,
+                //     id: Date.now(),
+                // }
+                // setUsers([...users, newUser])
+            }
             setFormData(_initForm)
+        } catch (error) {
+            const errMsg = error.message;
+            console.log(errMsg)
+        } finally {
+            fetchUser()
+            setShowModal(false)
         }
+
+        //jika edit data
 
         // disinii
         // const newUser = {
@@ -116,10 +151,13 @@ const ListUser = () => {
         setShowModal(false)
     }
 
-    const handleDelete = (id) => {
+    const handleDelete = async (id) => {
         const confirmation = window.confirm("are you sure want to delete data")
         if (confirmation) {
-            setUsers(users.filter((u) => u.id !== id))
+
+            await api.delete(`/user/${id}`)
+            fetchUser()
+            // setUsers(users.filter((u) => u.id !== id))
         }
         // filter users
         // setUsers(users.filter((u) => u.id !== id))
@@ -158,12 +196,16 @@ const ListUser = () => {
                             {users.map((user, index) => (
                                 <tr key={index} className="hover:bg-muted/50 transition-colors ">
                                     <td className="px-4 py-6 whitespace-nowrap">{index + 1}</td>
-                                    <td>{user.nama}</td>
+                                    <td>{user.name}</td>
                                     <td>{user.email}</td>
-                                    <td>{user.status}</td>
+                                    <td>
+                                        <span className={`px-3 py-1 text-sm font-semibold rounded-xl border ${user.is_active === 1 ? "border-emerald-500 text-emerald-600" : "border-rose-500 text-rose-600"}`}>
+                                            {user.is_active === 1 ? "Active" : "Inactive"}
+                                        </span>
+                                    </td>
                                     <td className="px-4 py-6 text-right whitespace-nowrap">
-                                        <Button onClick={() => handleEditModal(user)} variant="warning" size="sm" className="me-2">Edit</Button>
-                                        <Button onClick={() => handleDelete(user.id)} variant="danger" size="sm" className="me-2">Delete</Button>
+                                        <Button onClick={() => handleEditModal(user)} variant="warning" size="sm" className="me-2 bg-blue-200">Edit</Button>
+                                        <Button onClick={() => handleDelete(user.id)} variant="destructive" size="sm" className="me-2">Delete</Button>
                                     </td>
 
                                 </tr>
@@ -195,7 +237,7 @@ const ListUser = () => {
                         <Label>Password</Label>
                         <Input type="password"
                             name="password"
-                            value={formData.password} onChange={handleChange} required
+                            value={formData.password} onChange={handleChange} required={isEdit ? false : true}
                             placeholder="Enter your password"></Input>
                     </div>
                 </div>

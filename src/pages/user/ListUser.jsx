@@ -70,7 +70,7 @@ const ListUser = () => {
         try {
             const response = await api.get("/user")
 
-            setUsers(response.data.data)
+            setUsers(response.data)
         } catch (error) {
             console.log(error.message)
         }
